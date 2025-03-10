@@ -1,22 +1,23 @@
-Topic: Intro to formal languages. Regular grammars. Finite Automata.
+## Topic: Intro to formal languages. Regular grammars. Finite Automata.
 
-Course: Formal Languages & Finite Automata
- Author: Nicologlo Victoria
+## Course: Formal Languages & Finite Automata
+## Author: Nicologlo Victoria
 
 
-Theory
+## Theory
 Grammar is a collection of production rules that specify how a language's valid strings can be created. Production rules, which explain changes from one form to another, variables (non-terminals), terminal symbols, and a start symbol make up a grammar.
 
-Finite Automaton: A computational model for processing strings and identifying patterns. It is composed of an initial state, a collection of accepting states, transitions between states based on input symbols, and states. Finite automata are frequently employed in pattern matching, lexical analysis, and text processing.
+## Finite Automaton:
+A computational model for processing strings and identifying patterns. It is composed of an initial state, a collection of accepting states, transitions between states based on input symbols, and states. Finite automata are frequently employed in pattern matching, lexical analysis, and text processing.
 
-Objectives:
+## Objectives:
 * Understanding formal languages and finite automata.
 * Implementing the grammar and finite automata.
 * Generating and validating strings based on the grammar.
 
-## Implementation
+# Implementation
 
-# 1. Class Grammar
+## 1. Class Grammar
 
 This class represents a formal grammar consisting of:
 * Non-terminals (nonTerminals): symbols that can be replaced.
@@ -40,7 +41,7 @@ This method converts the grammar into a finite automaton:
 * The start symbol becomes the automaton's initial state.
 * Final states are non-terminals that can produce only terminal strings.
 
-# 2. Class FiniteAutomaton
+## 2. Class FiniteAutomaton
 
 This class implements a deterministic finite automaton (DFA) based on the grammar:
 * States (states): a set of automaton states.
@@ -57,7 +58,7 @@ This method checks whether a string belongs to the automaton's language:
 If a transition does not exist, the string is rejected.
 If the automaton ends in a final state, the string is accepted.
 
-# 3. Class Main
+## 3. Class Main
 
 The main program class:
 * Defines the grammar with non-terminals, terminals, and production rules.
@@ -69,8 +70,8 @@ The main program class:
 
 
 
-## Conclusions
+# Conclusions
 In this laboratory, I've successfully implemented given grammar to create finite automata, which demonstrated the practical relationship between formal language theory and computational models. This project highlighted the main principles of automata theory.
 
-## References
+# References
 1. Lecture notes
