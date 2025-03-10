@@ -25,7 +25,7 @@ This class represents a formal grammar consisting of:
 * Production rules (productions): mappings between non-terminals and possible replacements.
 * Start symbol (startSymbol): the initial non-terminal from which string generation begins.
 
- - generateString()
+ ### generateString()
    
  This method randomly generates a string based on the given grammar:
 * Creates a queue and adds the start symbol.
@@ -33,7 +33,7 @@ This class represents a formal grammar consisting of:
 * Appends terminal symbols to the final string.
 * Stops generation when only terminals remain in the queue or a maximum iteration limit is reached.
 
- - toFiniteAutomaton()
+ ### toFiniteAutomaton()
 
 This method converts the grammar into a finite automaton:
 * Automaton states are formed from non-terminals.
@@ -50,7 +50,7 @@ This class implements a deterministic finite automaton (DFA) based on the gramma
 * Start state (startState): the initial state of the automaton.
 * Final states (finalStates): states where the automaton accepts a string.
 
- - stringBelongToLanguage(String inputString)
+ ### stringBelongToLanguage(String inputString)
 
 This method checks whether a string belongs to the automaton's language:
 * Starts from the initial state.
