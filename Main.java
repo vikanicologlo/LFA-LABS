@@ -1,140 +1,135 @@
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-class Grammar {
-    private Set<Character> Vn;
-    private Set<Character> Vt;
-    private Map<Character, List<String>> P;
-    private Character S;
+enum TokenType {
+    ASSIGN, INTEGER, FLOAT, IDENTIFIER, EOF, EOL,
+    PLUS, MINUS, MULTIPLY, DIVIDE, SIN, COS,
+    LPAREN, RPAREN;
+}
 
-    public Grammar(Set<Character> Vn, Set<Character> Vt, Map<Character, List<String>> P, Character S) {
-        this.Vn = Vn;
-        this.Vt = Vt;
-        this.P = P;
-        this.S = S;
+class Token {
+    TokenType type;
+    String value;
+
+    public Token(TokenType type, String value) {
+        this.type = type;
+        this.value = value;
     }
 
-
-    public String generateString() {
-        return generateString(S);
-    }
-
-    private String generateString(Character symbol) {
-        if (Vt.contains(symbol)) {
-            return symbol.toString();
-        }
-
-        List<String> productions = P.get(symbol);
-        if (productions == null || productions.isEmpty()) {
-            throw new IllegalStateException("No productions for symbol: " + symbol);
-        }
-
-        String production = productions.get(new Random().nextInt(productions.size()));
-        StringBuilder result = new StringBuilder();
-        for (char c : production.toCharArray()) {
-            result.append(generateString(c));
-        }
-        return result.toString();
-    }
-
-    public FiniteAutomaton toFiniteAutomaton() {
-        Set<Character> Q = new HashSet<>(Vn);
-        Q.add('F');
-
-        Set<Character> Sigma = new HashSet<>(Vt);
-
-        Map<Character, Map<Character, Character>> delta = new HashMap<>();
-        for (Character state : Vn) {
-            Map<Character, Character> transitions = new HashMap<>();
-            for (String production : P.get(state)) {
-                if (production.isEmpty()) {
-                    throw new IllegalStateException("Production cannot be empty.");
-                }
-                char firstSymbol = production.charAt(0);
-                if (Vt.contains(firstSymbol)) {
-                    if (production.length() == 1) {
-                        transitions.put(firstSymbol, 'F');
-                    } else if (production.length() > 1 && Vn.contains(production.charAt(1))) {
-                        transitions.put(firstSymbol, production.charAt(1));
-                    } else {
-                        throw new IllegalStateException("Invalid production: " + production);
-                    }
-                } else {
-                    throw new IllegalStateException("First symbol of production must be a terminal.");
-                }
-            }
-            delta.put(state, transitions);
-        }
-
-
-        delta.put('F', new HashMap<>());
-
-        Character q0 = S;
-        Set<Character> F = new HashSet<>();
-        F.add('F');
-
-        return new FiniteAutomaton(Q, Sigma, delta, q0, F);
+    @Override
+    public String toString() {
+        return "Token(" + type + ", " + value + ")";
     }
 }
 
-class FiniteAutomaton {
-    private Set<Character> Q;
-    private Set<Character> Sigma;
-    private Map<Character, Map<Character, Character>> delta;
-    private Character q0;
-    private Set<Character> F;
+class Lexer {
+    private final String text;
+    private int pos;
+    private Character currentChar;
 
-    public FiniteAutomaton(Set<Character> Q, Set<Character> Sigma, Map<Character, Map<Character, Character>> delta, Character q0, Set<Character> F) {
-        this.Q = Q;
-        this.Sigma = Sigma;
-        this.delta = delta;
-        this.q0 = q0;
-        this.F = F;
+    public Lexer(String text) {
+        this.text = text;
+        this.pos = 0;
+        this.currentChar = text.isEmpty() ? null : text.charAt(0);
     }
 
+    private void moveForward() {
+        pos++;
+        currentChar = (pos < text.length()) ? text.charAt(pos) : null;
+    }
 
-    public boolean stringBelongToLanguage(String inputString) {
-        if (inputString == null) {
-            throw new IllegalArgumentException("Input string cannot be null.");
+    private void skipWhitespace() {
+        while (currentChar != null && Character.isWhitespace(currentChar) && currentChar != '\n') {
+            moveForward();
+        }
+    }
+
+    private Token number() {
+        StringBuilder result = new StringBuilder();
+        boolean isFloat = false;
+
+        if (currentChar == '-') {
+            result.append(currentChar);
+            moveForward();
         }
 
-        Character currentState = q0;
-
-        for (char symbol : inputString.toCharArray()) {
-            if (!Sigma.contains(symbol)) {
-                return false;
-            }
-
-            Map<Character, Character> transitions = delta.get(currentState);
-            if (transitions == null || !transitions.containsKey(symbol)) {
-                return false;
-            }
-
-            currentState = transitions.get(symbol);
+        while (currentChar != null && Character.isDigit(currentChar)) {
+            result.append(currentChar);
+            moveForward();
         }
 
-        return F.contains(currentState);
+        if (currentChar != null && currentChar == '.') {
+            isFloat = true;
+            result.append(currentChar);
+            moveForward();
+            while (currentChar != null && Character.isDigit(currentChar)) {
+                result.append(currentChar);
+                moveForward();
+            }
+        }
+
+        return new Token(isFloat ? TokenType.FLOAT : TokenType.INTEGER, result.toString());
     }
+
+    private Token identifier() {
+        StringBuilder result = new StringBuilder();
+        while (currentChar != null && (Character.isLetterOrDigit(currentChar) || currentChar == '_')) {
+            result.append(currentChar);
+            moveForward();
+        }
+        String id = result.toString();
+        if (id.equals("sin")) return new Token(TokenType.SIN, id);
+        if (id.equals("cos")) return new Token(TokenType.COS, id);
+        return new Token(TokenType.IDENTIFIER, id);
     }
+
+    public Token getNextToken() {
+        while (currentChar != null) {
+            if (Character.isWhitespace(currentChar)) {
+                if (currentChar == '\n') {
+                    moveForward();
+                    return new Token(TokenType.EOL, "\n");
+                }
+                skipWhitespace();
+                continue;
+            }
+
+            if (Character.isDigit(currentChar) || currentChar == '-') return number();
+            if (Character.isLetter(currentChar)) return identifier();
+
+            switch (currentChar) {
+                case '+': moveForward(); return new Token(TokenType.PLUS, "+");
+                case '-': moveForward(); return new Token(TokenType.MINUS, "-");
+                case '*': moveForward(); return new Token(TokenType.MULTIPLY, "*");
+                case '/': moveForward(); return new Token(TokenType.DIVIDE, "/");
+                case '=': moveForward(); return new Token(TokenType.ASSIGN, "=");
+                case '(': moveForward(); return new Token(TokenType.LPAREN, "(");
+                case ')': moveForward(); return new Token(TokenType.RPAREN, ")");
+                default: throw new RuntimeException("Invalid character: " + currentChar);
+            }
+        }
+        return new Token(TokenType.EOF, null);
+    }
+}
+
 public class Main {
     public static void main(String[] args) {
+        System.out.print("Введите выражение: ");
+        java.util.Scanner scanner = new java.util.Scanner(System.in);
+        String userInput = scanner.nextLine();
+        scanner.close();
 
-        Set<Character> Vn = new HashSet<>(Arrays.asList('S', 'B', 'C', 'D'));
-        Set<Character> Vt = new HashSet<>(Arrays.asList('a', 'b', 'c'));
-        Map<Character, List<String>> P = new HashMap<>();
-        P.put('S', Arrays.asList("aB"));
-        P.put('B', Arrays.asList("bS", "aC", "b"));
-        P.put('C', Arrays.asList("bD"));
-        P.put('D', Arrays.asList("a", "bC", "cS"));
+        Lexer lexer = new Lexer(userInput);
+        List<Token> tokens = new ArrayList<>();
 
-        Grammar grammar = new Grammar(Vn, Vt, P, 'S');
+        Token token;
+        do {
+            token = lexer.getNextToken();
+            tokens.add(token);
+        } while (token.type != TokenType.EOF);
 
-
-        FiniteAutomaton automaton = grammar.toFiniteAutomaton();
-        System.out.println("Generated strings and their validity:");
-        for (int i = 0; i < 5; i++) {
-            String generatedString = grammar.generateString();
-            boolean isValid = automaton.stringBelongToLanguage(generatedString);
-            System.out.println("'" + generatedString + "' is valid: " + isValid);
+        for (Token t : tokens) {
+            System.out.print(t + " ");
         }
     }
 }
