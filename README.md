@@ -1,6 +1,6 @@
 # Laboratory Work #3: Lexer & Scanner
 # Course: Formal Languages & Finite Automata
-# Author: Isacescu Maxim, FAF-231
+# Author: Nicologlo Victoria, FAF-233
 # Professors: Cretu Dumitru, Irina Cojuhari
 
 ## Theory
