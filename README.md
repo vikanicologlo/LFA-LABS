@@ -42,6 +42,8 @@ Core functionality includes:
    - `handleRepetition`: Manages repetition operators after alternation groups
    - `getRepetitionCount`: Determines random counts for repetition operators
 
+This code acts like a translator that turns regex patterns into actual strings by scanning the input character by character. It uses a chain of if-else if checks because that’s the simplest way to handle different operators in order—first the question mark, then the asterisk, and so on—just like how a person would read the expression step by step. Each operator gets its own block of logic, where the code checks nearby characters to understand the context (e.g., making sure an asterisk applies to the letter before it and not a closing parenthesis). For groups like (a|b), it specifically looks for the pipe symbol (|), randomly picks one of the options, and then checks if there’s a repetition operator (like ^2 or +) right after. To keep things clean, checks for letters and digits go into a separate isCharOrDigit method, while repetition logic is handled by handleRepetition to avoid duplication. This structure makes the code easy to follow and expand—if a new operator needs to be added, you can just slot in another condition without rewriting everything. The whole approach prioritizes readability and maintainability while reliably covering all the specified regex features.
+
 ### Demo Class
 
 Demonstrates the functionality with three example patterns:
