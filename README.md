@@ -7,8 +7,11 @@
 In formal language theory, Chomsky Normal Form (CNF) is a simplified form of context-free grammars. A grammar in CNF has all of its production rules in one of the following forms:
 
 A → BC (a non-terminal produces two non-terminals)
+
 A → a (a non-terminal produces a single terminal)
+
 S → ε (only if S is the start symbol and doesn't appear on the right side of any rule)
+
 Converting a grammar to CNF is useful for various algorithms, including the CYK parsing algorithm, which requires the grammar to be in this form. The transformation process involves several steps to eliminate different types of problematic productions
 
 ## Features
