@@ -14,62 +14,28 @@ S → ε (only if S is the start symbol and doesn't appear on the right side of 
 
 Converting a grammar to CNF is useful for various algorithms, including the CYK parsing algorithm, which requires the grammar to be in this form. The transformation process involves several steps to eliminate different types of problematic productions
 
-## Features
+## Implementation
 
-This tool provides the following functionalities:
+This tool is designed to work with formal grammars and helps automate several tasks that are essential in grammar transformations.
 
-1. **Define a Grammar:**
-   - Specify non-terminals, terminals, production rules, and the start symbol.
-   - The grammar is stored as a `Map` for efficient rule lookups, preserving insertion order using `LinkedHashMap`.
+First, you can define your grammar by specifying the non-terminals, terminals, production rules, and the start symbol. The grammar is stored efficiently in a LinkedHashMap, which helps with quick lookups while preserving the order in which the rules are added.
 
-2. **Print Grammar Rules:**
-   - Outputs the current state of the grammar in a readable format.
-   - Non-terminals and their associated productions are displayed.
+Once your grammar is defined, you can print it in a clear and readable format, displaying the non-terminals and their corresponding production rules.
 
-3. **Check Chomsky Normal Form (CNF):**
-   - Verifies whether the current grammar is in CNF.
-   - Returns `true` if all production rules comply with CNF constraints:
-     - Each production has either one terminal or two non-terminals.
-     - No epsilon (ε) productions are allowed except for the start symbol.
+The tool also checks if your grammar is in Chomsky Normal Form (CNF). CNF requires that each production rule has either a single terminal or two non-terminals, and no epsilon (ε) productions should exist, except for the start symbol. If your grammar doesn't meet these conditions, the tool will help transform it.
 
-4. **Eliminate Epsilon (ε) Productions:**
-   - Removes all epsilon productions from the grammar.
-   - Handles both direct and indirect nullable non-terminals and ensures all valid expansions of nullable rules are added.
+One of the core transformations the tool performs is eliminating epsilon (ε) productions. This means that it removes any production rules that derive the empty string, handling both direct and indirect nullable non-terminals. All valid expansions of nullable rules are also taken into account.
 
-5. **Eliminate Unit Productions:**
-   - Removes unit productions (e.g., rules where a non-terminal produces another non-terminal).
-   - Replaces unit rules with the productions of the referenced non-terminal.
+The tool also helps remove unit productions—rules where a non-terminal directly produces another non-terminal. These unit productions are replaced by the actual productions of the referenced non-terminal, simplifying the grammar.
 
-6. **Eliminate Inaccessible Symbols:**
-   - Removes non-terminals and their rules if they cannot be reached from the start symbol.
-   - Ensures only reachable grammar rules remain.
+Another important step is removing inaccessible symbols. These are non-terminals and production rules that can't be reached from the start symbol. The tool ensures only the relevant rules remain, making the grammar easier to work with.
 
-7. **Eliminate Non-Productive Symbols:**
-   - Removes non-terminals that cannot derive terminal strings.
-   - Ensures all remaining rules are productive.
+Next, the tool eliminates non-productive symbols. These are non-terminals that cannot generate terminal strings and are therefore removed. This ensures that only productive rules are left.
 
-8. **Convert to Chomsky Normal Form (CNF):**
-   - Handles complex rules with more than two symbols by introducing new non-terminals.
-   - Replaces terminal symbols in mixed rules (e.g., `ABa`) with new non-terminals.
-   - Ensures all rules conform to CNF.
+Finally, the tool helps convert your grammar into Chomsky Normal Form (CNF). For rules that are more complex, such as those with more than two symbols, new non-terminals are introduced to break them down into simpler parts. Mixed rules, like those that include both terminals and non-terminals (e.g., ABa), are also adjusted by replacing terminals with new non-terminals, ensuring the grammar meets CNF requirements.
 
-## How It Works
+Once all these transformations are applied, the tool outputs the final grammar in CNF in a clear, human-readable format, so you can see the end result of the changes.
 
-The program works by applying a sequence of transformations to the grammar:
-
-1. **Input Grammar:**
-   - Define the grammar with non-terminals, terminals, production rules, and a start symbol.
-
-2. **Transformations:**
-   - Apply the following transformations step-by-step:
-     1. Eliminate epsilon productions.
-     2. Eliminate unit productions.
-     3. Remove inaccessible symbols.
-     4. Remove non-productive symbols.
-     5. Convert to CNF by introducing new non-terminals for complex rules.
-
-3. **Output:**
-   - The final grammar in CNF is printed in a clean, readable format.
 
 ## Conclusion
 
