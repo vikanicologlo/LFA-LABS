@@ -78,7 +78,7 @@ Types of nodes:
 - AssignmentExpression
 
 ### Example output for the input x = 1 + sin(2):
-
+```
 Assignment:
 
   Variable: x
@@ -96,7 +96,7 @@ Assignment:
         Function: sin
         
           Number: 2.0
-          
+          ```
 This shows the tree's hierarchy and structure.
 
 ### Features
