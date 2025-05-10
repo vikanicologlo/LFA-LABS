@@ -1,0 +1,4 @@
+public enum TokenType {
+    NUMBER, IDENTIFIER, OPERATOR,
+    LPAREN, RPAREN, ASSIGN, EOF
+}
