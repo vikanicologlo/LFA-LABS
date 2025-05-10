@@ -12,9 +12,8 @@ This project simulates how a compiler or interpreter would understand a mathemat
 - **Expression Classes** – Java classes that model the tree nodes.
 - **Main** – The entry point that ties everything together and prints the AST.
 
----
 
-## 🛠️ Implementation
+## Implementation
 
 ### 1. Lexer
 
@@ -36,11 +35,11 @@ public class Lexer {
     }
 }
 ```
-2. Parser
+### 2. Parser
 The parser builds an AST from the list of tokens using recursive descent parsing and operator precedence.
 
 Structure:
-```
+```java
 public class Parser {
     public Expression parseAssignment() {
         // Parses assignments like: x = expression
@@ -57,9 +56,10 @@ public class Parser {
         // Handles numbers, variables, parentheses, and function calls
     }
 }```
+
 It supports nesting and proper order of operations (e.g. 1 + 2 * 3 is parsed correctly with multiplication having higher precedence than addition).
 
-3. Expression Classes (AST Nodes)
+**3. Expression Classes (AST Nodes)**
 All node types implement the Expression interface and override the print(String indent) method.
 
 Types of nodes:
