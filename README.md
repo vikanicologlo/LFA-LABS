@@ -55,11 +55,12 @@ public class Parser {
     private Expression parsePrimary() {
         // Handles numbers, variables, parentheses, and function calls
     }
-}```
+}
+```
 
 It supports nesting and proper order of operations (e.g. 1 + 2 * 3 is parsed correctly with multiplication having higher precedence than addition).
 
-**3. Expression Classes (AST Nodes)**
+### 3. Expression Classes (AST Nodes)
 All node types implement the Expression interface and override the print(String indent) method.
 
 Types of nodes:
@@ -102,3 +103,7 @@ Recognizes parentheses and assignment
 
 Outputs a readable tree representation
 
+## Conclusion
+This project is a hands-on way to understand how expressions are parsed and structured into a tree. It mirrors how compilers interpret code under the hood — by tokenizing, parsing, and building syntax trees.
+
+The code is modular and easy to extend, making it a solid base for further development — like evaluating expressions, adding variable environments, or compiling into bytecode.
