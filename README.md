@@ -80,14 +80,23 @@ Types of nodes:
 ### Example output for the input x = 1 + sin(2):
 
 Assignment:
+
   Variable: x
+  
   Expression:
+  
     Binary Operation: +
+    
       Left:
+      
         Number: 1.0
+        
       Right:
+      
         Function: sin
+        
           Number: 2.0
+          
 This shows the tree's hierarchy and structure.
 
 ### Features
