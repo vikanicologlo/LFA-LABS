@@ -3,6 +3,20 @@
 ## Author: Nicologlo Victoria
 ## Group: FAF-233
 
+## Theory
+In the context of formal languages and automata, parsing is the process of analyzing a string of symbols based on a given grammar. It plays a crucial role in compilers and interpreters by transforming source code into a structured representation called the Abstract Syntax Tree (AST).
+
+The Lexer (Tokenizer) is the first stage of a compiler pipeline. It scans the raw input and converts it into a sequence of tokens, which are the smallest meaningful units (e.g., numbers, operators, identifiers, parentheses). Lexical analysis ensures that the input stream is properly segmented before further analysis.
+
+The Parser takes these tokens and organizes them into a tree structure, the AST, using recursive descent parsing and operator precedence rules. Each node in the AST corresponds to a syntactic construct, such as binary operations, function calls, or assignments. Parsing also enforces grammatical rules, ensuring that expressions are syntactically valid.
+
+The Abstract Syntax Tree (AST) abstracts away unnecessary syntactic details (e.g., parentheses), preserving only the hierarchical structure and semantic relationships. This tree is crucial for later stages such as evaluation, optimization, or code generation.
+
+Theoretical foundations of this approach lie in context-free grammars (CFGs) and recursive algorithms. Parsing strategies like top-down parsing, LL parsing, or recursive descent are used to construct trees from grammar rules. The modular class design (e.g., BinaryExpression, FunctionExpression) reflects the recursive structure of grammar definitions.
+
+This theory is applied in the project by implementing a lexer, parser, and expression classes in Java, providing insight into how languages are processed at a low level and how compilers interpret and represent code internally.
+
+
 ## Structure
 
 This project simulates how a compiler or interpreter would understand a mathematical expression or assignment. It involves the following components:
